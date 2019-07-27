@@ -3,19 +3,19 @@ from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
 class LoadFactOperator(BaseOperator):
-    """
+    '''
 
 
 
-    """
+    '''
     
     ui_color = '#F98866'
 
     @apply_defaults
     def __init__(self,
-                 redshift_conn_id = "",
-                 table = "",
-                 sql_query = "",
+                 redshift_conn_id = '',
+                 table = '',
+                 sql_query = '',
                  *args, **kwargs):
 
         super(LoadFactOperator, self).__init__(*args, **kwargs)
@@ -28,9 +28,9 @@ class LoadFactOperator(BaseOperator):
         self.log.info(' =====> Main configurations in DataQualityOperator. Starting loading the tables in Redshift')
         self.log.info(' =====> Starting loading the tables in Redshift')
         redshift_hook = PostgresHook(self.redshift_conn_id)
-        insert_sql = """
+        insert_sql = '''
             INSERT INTO {}
             {}
-        """.format(self.table, self.sql_query)
+        '''.format(self.table, self.sql_query)
         
         self.log.info(' =====> Done with the loading in LoadFactOperator!')

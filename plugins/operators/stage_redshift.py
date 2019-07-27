@@ -4,11 +4,11 @@ from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
 class StageToRedshiftOperator(BaseOperator):
-    """
+    '''
 
 
 
-    """
+    '''
 
 
     self.log.info(' =====> Connecting with StageToRedshiftOperator')
@@ -16,23 +16,23 @@ class StageToRedshiftOperator(BaseOperator):
     template_fields = ('s3_key')
     
     # Collect the SQL Template CSV:
-    sql_template_csv = """
+    sql_template_csv = '''
         COPY {}
         FROM '{}'
         ACCESS_KEY_ID '{}'
         SECRET_ACCESS_KEY '{}'
         IGNOREHEADER {}
         DELIMITER '{}'
-    """
+    '''
     
     # Collect the SQL Template CSV:
-    sql_template_json = """
+    sql_template_json = '''
         COPY {}
         FROM '{}'
         ACCESS_KEY_ID '{}'
         SECRET_ACCESS_KEY '{}'
         format as json {}
-    """
+    '''
 
     @apply_defaults
     def __init__(
