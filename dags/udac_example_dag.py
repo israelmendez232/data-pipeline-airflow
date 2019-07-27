@@ -21,7 +21,7 @@ default_args = {
 dag = DAG(
     'udac_example_dag',
     default_args=default_args,
-    description='Load and transform data in Redshift with Airflow',
+    description='Load and transform data in Redshift with Airflow.',
     schedule_interval='@hourly'
 )
 
@@ -33,9 +33,9 @@ start_operator = DummyOperator(
 stage_events_to_redshift = StageToRedshiftOperator(
     task_id='Stage_events',
     dag=dag
-    aws_credentials_id='aws_credentials',
-    redshift_conn_id='redshift',
-    s3_key='log_data/{{ ds }}-events.csv',
+    aws_credentials='aws_credentials',
+    redshift='redshift',
+    s3_key='log_data/',
     s3_bucket='dend',
     table='staging_events'
 )
@@ -43,18 +43,17 @@ stage_events_to_redshift = StageToRedshiftOperator(
 stage_songs_to_redshift = StageToRedshiftOperator(
     task_id='Stage_songs',
     dag=dag
-    aws_credentials_id='aws_credentials',
-    redshift_conn_id='redshift',
+    aws_credentials='aws_credentials',
+    redshift='redshift',
     s3_key='song_data/',
     s3_bucket='dend',
     table='staging_songs',
-    file_extension='json'
 )
 
 load_songplays_table = LoadFactOperator(
     task_id='Load_songplays_fact_table',
     dag=dag
-    redshift_conn_id='redshift',
+    redshift='redshift',
     table='songplays',
     sql_query=SqlQueries.songplay_table_insert
 )
@@ -64,8 +63,8 @@ load_user_dimension_table = LoadDimensionOperator(
     dag=dag
     provide_context=True,
     table='users',
-    aws_credentials_id='aws_credentials',
-    redshift_conn_id='redshift',
+    aws_credentials='aws_credentials',
+    redshift='redshift',
     sql_query=SqlQueries.user_table_insert
 )
 
@@ -74,8 +73,8 @@ load_song_dimension_table = LoadDimensionOperator(
     dag=dag
     provide_context=True,
     table='songs',
-    aws_credentials_id='aws_credentials',
-    redshift_conn_id='redshift',
+    aws_credentials='aws_credentials',
+    redshift='redshift',
     sql_query=SqlQueries.user_table_insert
 )
 
@@ -84,8 +83,8 @@ load_artist_dimension_table = LoadDimensionOperator(
     dag=dag
     provide_context=True,
     table='artists',
-    aws_credentials_id='aws_credentials',
-    redshift_conn_id='redshift',
+    aws_credentials='aws_credentials',
+    redshift='redshift',
     sql_query=SqlQueries.user_table_insert
 )
 
@@ -94,8 +93,8 @@ load_time_dimension_table = LoadDimensionOperator(
     dag=dag
     provide_context=True,
     table='time',
-    aws_credentials_id='aws_credentials',
-    redshift_conn_id='redshift',
+    aws_credentials='aws_credentials',
+    redshift='redshift',
     sql_query=SqlQueries.user_table_insert
 )
 
@@ -104,8 +103,8 @@ run_quality_checks = DataQualityOperator(
     dag=dag
     provide_context=True,
     tables=["songplays", "users", "songs", "artirst", "time"],
-    aws_credentials_id="aws_credentials",
-    redshift_conn_id='redshift'
+    aws_credentials="aws_credentials",
+    redshift='redshift'
 )
 
 end_operator = DummyOperator(

@@ -37,21 +37,20 @@ class StageToRedshiftOperator(BaseOperator):
     @apply_defaults
     def __init__(
         self,
-        aws_credentials_id='',
-        redshift_conn_id='',
+        aws_credentials='',
+        redshift='',
         s3_key='',
         s3_bucket='',
         table='',
         ignore_header=1,
         delimiter=',',
-        file_extension='csv',
         *args, 
         **kwargs
     ):
 
         super(StageToRedshiftOperator, self).__init__(*args, **kwargs)
-        self.aws_credentials_id = aws_credentials_id
-        self.redshift_conn_id = redshift_conn_id
+        self.aws_credentials = aws_credentials
+        self.redshift = redshift
         self.s3_key = s3_key
         self.s3_bucket = s3_bucket
         self.table = table
@@ -62,9 +61,9 @@ class StageToRedshiftOperator(BaseOperator):
     def execute(self, context):
         self.log.info(' =====> Done with the configuration with StageToRedshiftOperator.')
 
-        aws_hook = AwsHook(self.aws_credentials_id)
+        aws_hook = AwsHook(self.aws_credentials)
         credentials = aws_hook.get_credentials()
-        redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
+        redshift = PostgresHook(redshift=self.redshift)
         self.log.info(' =====> Connecting with AWS.')
 
         rendered_key = self.s3_key.format(**context)

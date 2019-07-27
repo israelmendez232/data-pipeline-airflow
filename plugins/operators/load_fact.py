@@ -13,21 +13,21 @@ class LoadFactOperator(BaseOperator):
 
     @apply_defaults
     def __init__(self,
-                 redshift_conn_id = '',
+                 redshift = '',
                  table = '',
                  sql_query = '',
                  *args, **kwargs):
 
         super(LoadFactOperator, self).__init__(*args, **kwargs)
-        self.redshift_conn_id = redshift_conn_id,
+        self.redshift = redshift,
         self.table = table,
         self.sql_query = sql_query,
-        self.aws_credenitals_id = aws_credentials_id
+        self.aws_credenitals_id = aws_credentials
 
     def execute(self, context):
         self.log.info(' =====> Main configurations in DataQualityOperator. Starting loading the tables in Redshift')
         self.log.info(' =====> Starting loading the tables in Redshift')
-        redshift_hook = PostgresHook(self.redshift_conn_id)
+        redshift_hook = PostgresHook(self.redshift)
         insert_sql = '''
             INSERT INTO {}
             {}
